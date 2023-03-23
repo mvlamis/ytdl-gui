@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog
+import customtkinter as ctk
 import os
 
 folder = ""
@@ -14,26 +15,25 @@ def getFolder():
     # get the folder
     folder = filedialog.askdirectory()
     # set the folder to the entry
-    outputFolder.config(text=folder)
+    outputFolder.configure(text=folder)
 
 def download():
     print(folder)
     # get the link from the entry
     link = linkEntry.get()
     # get the format from the option menu
-    fileFormat = value_inside.get()
+    fileFormat = formatPicker.get()
     
     # run the command
     os.system(f"yt-dlp '{link}' -o '{folder}/%(title)s.%(ext)s' -f {fileFormat}")
     print("Link: " + link)
     print("Folder: " + folder)
-    print("Title: " + title)
+    print("Format: " + fileFormat) 
 
 
-# Create the main window
-root = tk.Tk()
-# setup window
-root.title("YT-DLP")
+# Create the main window with customtkinter
+root = ctk.CTk()
+root.title("Youtube Downloader")
 root.geometry("500x500")
 
 
@@ -42,27 +42,27 @@ value_inside.set("Select a format")
 
 
 # Create a frame
-frame = tk.Frame(root)
+frame = ctk.CTkFrame(root)
 frame.pack()
 
 # youtube link entry
-linkEntry = tk.Entry(frame)
+linkEntry = ctk.CTkEntry(frame)
 linkEntry.pack()
 
 # output folder picker
-outputFolder = tk.Button(frame, text="Output Folder")
-outputFolder.config(command=getFolder)
+outputFolder = ctk.CTkButton(frame, text="Output Folder")
+outputFolder.configure(command=getFolder)
 outputFolder.pack()
 
 # format picker
-formatPicker = tk.OptionMenu(root, value_inside, *formats)
+formatPicker = ctk.CTkOptionMenu(frame, values=formats)
 formatPicker.pack()
 
 tk.StringVar(root)
 
 # Download button
-downloadButton = tk.Button(frame, text="Download")
-downloadButton.config(command=download)
+downloadButton = ctk.CTkButton(frame, text="Download", fg_color="green", hover_color="darkgreen")
+downloadButton.configure(command=download)
 downloadButton.pack()
 
 
